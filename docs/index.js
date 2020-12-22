@@ -1,19 +1,7 @@
-let format = d3.format(",");
-
-// Set tooltips
-// let tip = d3.tip()
-//     .attr('class', 'd3-tip')
-//     .offset([-10, 0])
-//     .html(function(d) {
-//         return "<strong>Country: </strong><span class='details'>" + d.properties.name + "<br></span>" + "<strong>Population: </strong><span class='details'>" + format(d.population) +"</span>";
-//     })
-
-// const width = window.innerWidth - 16;
-// const weight = window.innerHeight - 16;
-
-let margin = {top: 0, right: 0, bottom: 0, left: 0},
-    width = 960 - margin.left - margin.right,
-    height = 620 - margin.top - margin.bottom;
+let width = 960;
+let height = 620;
+let marginX = (window.innerWidth - width) / 2;
+let marginY = (window.innerHeight - height) / 2 - 135;
 
 let color = d3.scaleThreshold()
     .domain([10000,100000,500000,1000000,5000000,10000000,50000000,100000000,500000000,1500000000])
@@ -25,26 +13,20 @@ let svg = d3.select("body")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
-    .attr("viewBox", `0 -120 ${width} ${height}`)
+    .attr("viewBox", `${marginX} ${marginY} 960 620`)
     .append('g')
     .attr('class', 'map');
 
 const resizeMap = () => {
-    const newWidth = window.innerWidth - 16;
-    const newHeight = window.innerHeight - 16;
+    width = window.innerWidth - 4;
+    height = window.innerHeight - 8;
+    console.log('Zoom: ' + window.visualViewport.scale);
     d3.select("svg")
-        .attr("width", newWidth)
-        .attr("height", newHeight);
+        .attr("width", width)
+        .attr("height", height);
 };
 
-svg.on('zoom', event => {
-    //const { ctrlKey } = event
-    console.log('AAAAA', event);
-    // if (ctrlKey) {
-        //event.preventDefault();
-    //     return
-    // }
-}, { passive: false })
+
 resizeMap();
 
 let projection = d3.geoMercator()
@@ -55,7 +37,6 @@ path = d3.geoPath().projection(projection);
 
 
 window.addEventListener('resize', resizeMap);
-//svg.call(tip);
 
 queue()
     .defer(d3.json, "world_countries.json")
@@ -63,13 +44,6 @@ queue()
     .await(ready);
 
 function ready(error, data, population) {
-
-    // let question = document.getElementById('question');
-    // const onMouseMove = (e) =>{
-    //     question.style.left = (e.pageX + 30) + 'px';
-    //     question.style.top = (e.pageY - 30) + 'px';
-    // }
-    // document.addEventListener('mousemove', onMouseMove);
 
     let populationById = {};
 
@@ -115,9 +89,4 @@ function ready(error, data, population) {
         // .datum(topojson.mesh(data.features, function(a, b) { return a !== b; }))
         .attr("class", "names")
         .attr("d", path);
-
-    d3.select("body").on("zoom", () => {
-        alert('ZOOM!!!');
-        console.log("zoom event");
-    });
 }
