@@ -17,3 +17,7 @@ svg {
     font-size: 2vh;
     border: solid red 1px;
 }
+
+@-ms-viewport{
+    width: device-width;
+}

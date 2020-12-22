@@ -37,7 +37,14 @@ const resizeMap = () => {
         .attr("height", newHeight);
 };
 
-
+svg.on('zoom', event => {
+    //const { ctrlKey } = event
+    console.log('AAAAA', event);
+    // if (ctrlKey) {
+        //event.preventDefault();
+    //     return
+    // }
+}, { passive: false })
 resizeMap();
 
 let projection = d3.geoMercator()
@@ -45,6 +52,7 @@ let projection = d3.geoMercator()
     .translate( [width / 2, height / 2]);
 
 path = d3.geoPath().projection(projection);
+
 
 window.addEventListener('resize', resizeMap);
 //svg.call(tip);
@@ -67,6 +75,7 @@ function ready(error, data, population) {
 
     population.forEach(function(d) { populationById[d.id] = +d.population; });
     data.features.forEach(function(d) { d.population = populationById[d.id] });
+
 
     svg.append("g")
         .attr("class", "countries")
