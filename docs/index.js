@@ -43,6 +43,15 @@ queue()
     .defer(d3.tsv, "world_population.tsv")
     .await(ready);
 
+let question = 'Democratic Republic of the Congo';
+let questionPoints = [
+    {x:220, y: 0},
+    {x:220, y: 600},
+    {x:500, y: 900},
+    {x:600, y: 1200},
+
+]
+
 function ready(error, data, population) {
 
     let populationById = {};
@@ -50,6 +59,16 @@ function ready(error, data, population) {
     population.forEach(function(d) { populationById[d.id] = +d.population; });
     data.features.forEach(function(d) { d.population = populationById[d.id] });
 
+    svg.append("g")
+        .attr("class", "question")
+        .selectAll("text")
+        .data(questionPoints)
+        .enter().append("text")
+        .attr("x", (d) => { return d.x; })
+        .attr("y", (d) => { return d.y; })
+        .attr("font-size", "16")
+        .attr('stroke', "lightgrey")
+        .text(question);
 
     svg.append("g")
         .attr("class", "countries")
