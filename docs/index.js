@@ -1,5 +1,5 @@
-let width = 960;
-let height = 620;
+let width = 960*3;
+let height = 620*3;
 let marginX = 0;//(window.innerWidth - width) / 2;
 let marginY = -120;//(window.innerHeight - height) / 2 - 135;
 
@@ -13,13 +13,13 @@ let svg = d3.select("body")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
-    .attr("viewBox", `${marginX} ${marginY} 960 620`)
+    .attr("viewBox", `${marginX} ${marginY} ${width} ${height}`)
     .append('g')
     .attr('class', 'map');
 
 const resizeMap = () => {
-    width = window.innerWidth - 4;
-    height = window.innerHeight - 8;
+    width = (window.innerWidth - 4);
+    height = (window.innerHeight - 8);
     console.log('Zoom: ' + window.visualViewport.scale);
     d3.select("svg")
         .attr("width", width)
@@ -30,7 +30,7 @@ const resizeMap = () => {
 //resizeMap();
 
 let projection = d3.geoMercator()
-    .scale(150)
+    .scale(450)
     .translate( [width / 2, height / 2]);
 
 path = d3.geoPath().projection(projection);
