@@ -5,23 +5,44 @@ html {
 }
 
 body {
-    margin: 0px;
-    min-height: 100%;
-    //width: 100%;
-
-}
-body {
     margin: 0;
     padding: 0;
-    min-height: 100%;
+    //min-height: 100%;
     width: 100%;
-    overflow: auto;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    //overflow: auto;
     box-sizing: border-box;
-    //border: solid blue 2px;
+    border: solid blue 2px;
     /*display: flex;*/
     /*flex-direction: column;*/
     /*justify-content: center;*/
+    padding: 5px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
 
+header {
+    box-sizing: border-box;
+    border: solid green 2px;
+    padding: 5px;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 2vmax;
+    justify-content: space-between;
+}
+main {
+    flex: auto;
+    overflow: auto;
+    box-sizing: border-box;
+    border: solid red 2px;
+    padding: 5px;
 }
 svg {
     box-sizing: border-box;
