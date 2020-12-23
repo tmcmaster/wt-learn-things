@@ -7,33 +7,68 @@ let color = d3.scaleThreshold()
 let path = d3.geoPath();
 let svg = d3.select(document.getElementById('map'));
 
+const COLOR_DEFAULT = "rgb(107,174,214)";
+const COLOR_CORRECT = "green";
+const COLOR_WRONG = "red";
+
+
 queue()
     .defer(d3.json, "world_countries.json")
     .defer(d3.csv, "world_population.csv")
     .await(ready);
 
-let question = 'Democratic Republic of the Congo';
-
-function updateQuestion(text) {
-    document.getElementById('question').innerText = question;
-}
-
-
 function ready(error, data, population) {
 
+    let countries = data.features.sort(() => .5 - Math.random()).map((item) => item.properties.name);
+    console.log('Countries: ', countries);
+
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
+
+    let question = -1;
+    let requiredCountry = '';
+
     let populationById = {};
+    const questionElement = document.getElementById('question');
 
     population.forEach(function(d) { populationById[d.id] = +d.population; });
     data.features.forEach(function(d) { d.population = populationById[d.id] });
 
-    // document.getElementById('zoom').addEventListener('click', () => {
-    //     zoom = 3;
-    //
-    //     buildMap();
-    // });
+    updateQuestion();
 
-    updateQuestion('Chad');
+    function updateScore() {
 
+    }
+
+    function updateQuestion() {
+        requiredCountry = countries[++question];
+        questionElement.innerText = requiredCountry;
+        questionElement.focus();
+    }
+
+    function checkSelectedCountry(selectedCountry) {
+        if (selectedCountry === requiredCountry) {
+            const correctCountry = d3.select(document.getElementById('country-' + requiredCountry));
+            correctCountry.style('fill', COLOR_CORRECT);
+            correctAnswers++;
+            updateQuestion();
+            setTimeout(() => {
+                correctCountry.style('fill', COLOR_DEFAULT);
+            }, 1000);
+        } else {
+            const correctCountry = d3.select(document.getElementById('country-' + requiredCountry));
+            const wrongCountry = d3.select(document.getElementById('country-' + selectedCountry));
+            correctCountry.style('fill', COLOR_CORRECT);
+            wrongCountry.style('fill', COLOR_WRONG);
+            wrongAnswers++;
+            setTimeout(() => {
+                correctCountry.style('fill', COLOR_DEFAULT);
+                wrongCountry.style('fill', COLOR_DEFAULT);
+                updateQuestion();
+            }, 3000);
+        }
+
+    }
     function buildMap() {
         let width = 960*zoom;
         let height = 620*zoom;
@@ -59,7 +94,8 @@ function ready(error, data, population) {
             .data(data.features)
             .enter().append("path")
             .attr("d", path)
-            .style("fill", function(d) { return color(populationById[d.id]); })
+            .attr('id', function(d) {return 'country-' + d.properties.name})
+            .style("fill", function(d) { return "rgb(107,174,214)"; })
             .style('stroke', 'white')
             .style('stroke-width', 1.5)
             .style("opacity",0.8)
@@ -68,6 +104,8 @@ function ready(error, data, population) {
             .style('stroke-width', 0.3)
             .on('click',(d) => {
                 console.log('Data: ', d);
+                let selectedCountry = d.properties.name;
+                checkSelectedCountry(selectedCountry);
             })
             .on('mouseover',function(d) {
                 d3.select(this)

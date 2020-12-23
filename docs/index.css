@@ -15,7 +15,7 @@ body {
     right: 0;
     //overflow: auto;
     box-sizing: border-box;
-    border: solid blue 2px;
+    //border: solid blue 2px;
     /*display: flex;*/
     /*flex-direction: column;*/
     /*justify-content: center;*/
@@ -28,20 +28,34 @@ body {
 
 header {
     box-sizing: border-box;
-    border: solid green 2px;
-    padding: 5px;
-    height: 10vh;
+    //border: solid green 2px;
+    padding: 0 0.5vmax 0 0.5vmax;
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-size: 2vmax;
+
     justify-content: space-between;
+}
+
+header.title {
+    height: 4vh;
+    font-size: 1.5vmax;
+}
+
+h1,h2,h3,h3 {
+    margin: 0;
+}
+
+header.score {
+    height: 3vh;
+    font-size: 1vmax;
+    border-bottom: solid grey 0.2vmax;
 }
 main {
     flex: auto;
     overflow: auto;
     box-sizing: border-box;
-    border: solid red 2px;
+    //border: solid red 2px;
     padding: 5px;
 }
 svg {
