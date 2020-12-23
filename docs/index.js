@@ -1,7 +1,7 @@
 let width = 960;
 let height = 620;
-let marginX = (window.innerWidth - width) / 2;
-let marginY = (window.innerHeight - height) / 2 - 135;
+let marginX = 0;//(window.innerWidth - width) / 2;
+let marginY = -120;//(window.innerHeight - height) / 2 - 135;
 
 let color = d3.scaleThreshold()
     .domain([10000,100000,500000,1000000,5000000,10000000,50000000,100000000,500000000,1500000000])
@@ -27,7 +27,7 @@ const resizeMap = () => {
 };
 
 
-resizeMap();
+//resizeMap();
 
 let projection = d3.geoMercator()
     .scale(150)
@@ -36,7 +36,7 @@ let projection = d3.geoMercator()
 path = d3.geoPath().projection(projection);
 
 
-window.addEventListener('resize', resizeMap);
+//window.addEventListener('resize', resizeMap);
 
 queue()
     .defer(d3.json, "world_countries.json")
