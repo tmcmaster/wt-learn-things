@@ -30,6 +30,8 @@ function ready(error, data, population) {
 
     let populationById = {};
     const questionElement = document.getElementById('question');
+    const remainingElement = document.getElementById('remaining');
+    const scoreElement = document.getElementById('score');
 
     population.forEach(function(d) { populationById[d.id] = +d.population; });
     data.features.forEach(function(d) { d.population = populationById[d.id] });
@@ -37,16 +39,22 @@ function ready(error, data, population) {
     updateQuestion();
 
     function updateScore() {
-
+        const score = (question < 1 ? 0 : (correctAnswers / question)*100);
+        const remaining = (question < 1 ? countries.length : countries.length - question);
+        remainingElement.innerText = remaining.toFixed(0);
+        scoreElement.innerText = score.toFixed(1);
     }
 
     function updateQuestion() {
         requiredCountry = countries[++question];
-        questionElement.innerText = requiredCountry;
+        questionElement.innerText = (requiredCountry === undefined ? '' : requiredCountry);
         questionElement.focus();
+        updateScore();
     }
 
     function checkSelectedCountry(selectedCountry) {
+        if ((question + 1) >= countries.length) return;
+
         if (selectedCountry === requiredCountry) {
             const correctCountry = d3.select(document.getElementById('country-' + requiredCountry));
             correctCountry.style('fill', COLOR_CORRECT);
@@ -58,12 +66,14 @@ function ready(error, data, population) {
         } else {
             const correctCountry = d3.select(document.getElementById('country-' + requiredCountry));
             const wrongCountry = d3.select(document.getElementById('country-' + selectedCountry));
+            document.getElementById('wrongAnswer').innerText = selectedCountry;
             correctCountry.style('fill', COLOR_CORRECT);
             wrongCountry.style('fill', COLOR_WRONG);
             wrongAnswers++;
             setTimeout(() => {
                 correctCountry.style('fill', COLOR_DEFAULT);
                 wrongCountry.style('fill', COLOR_DEFAULT);
+                document.getElementById('wrongAnswer').innerText = '';
                 updateQuestion();
             }, 3000);
         }
