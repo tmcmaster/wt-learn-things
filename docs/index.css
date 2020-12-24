@@ -1,3 +1,8 @@
+html {
+    background-color: #ffffff;
+    /* Or any color / image you want */
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -19,10 +24,6 @@ body {
     flex-direction: column;
     justify-content: start;
     background: white;
-}
-
-*:fullscreen, *:-webkit-full-screen, *:-moz-full-screen {
-    background-color: white;
 }
 
 header {
