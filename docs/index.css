@@ -18,6 +18,11 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: start;
+    background: white;
+}
+
+*:fullscreen, *:-webkit-full-screen, *:-moz-full-screen {
+    background-color: white;
 }
 
 header {
